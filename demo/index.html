@@ -112,51 +112,13 @@
     </div>
 
 
-    <hr />
-
-    <div id="usage">
-      <h1>
-        How to use Genie
-      </h1>
-      Both examples below will create a wish which will alert "Consider them done!" to the user.<br />
-      Go ahead and give it a try! Copy the JavaScript and paste it in your console then make the wish!
-      <div>
-        <h2>JavaScript</h2>
-        <pre>genie({
-  magicWords: 'Do my dishes',
-  action: function doDishes() {
-    alert('Consider them done!');
-  }
-});</pre>
-      </div>
-      <div>
-        <h2>AngularJS Directive</h2>
-        <pre>&lt;button ng-click="doDishes()" genie-wish&gt;Do my dishes&lt;/button&gt;</pre>
-      </div>
-      That's it! It's pretty simple! Obviously, you need to include the dependency on your page and there is a lot more to it if you want more control.<br />
-      Head over to the <a href="https://github.com/kentcdodds/genie" ga>GitHub project</a> to see more documentation on the customization you can do.
-    </div>
-
-    <hr />
-    <div>
-      <h2>Genie Workshop</h2>
-      The best way to learn how to use Genie in an interactive way. Checkout the
-      <a href="workshop/" genie-wish wish-i-icon="{{iconPrefix}}cogs" wish-context="{{demoContext}}">Genie Workshop</a>.
-    </div>
-
-    <hr />
-
-    <div>
-      <h2>Want Genie Everywhere?</h2>
-      Try the <a href="https://chrome.google.com/webstore/detail/genies-lamp/pimmaneflgfbknjkjdlnffagpgfeklko" genie-wish wish-i-icon="{{iconPrefix}}cog" wish-context="{{demoContext}}">Chrome Extension</a>
-    </div>
 
     <div id="bottom-stuff">
       <div class="custom-template {{genieStyle.color + ' ' + genieStyle.size + ' ' + genieStyle.animationSpeed}}" ng-show="genieStyle.template === 'custom'">
         <div ux-lamp="lamp" lamp-visible="lamp.genieVisible" rub-class="visible" wish-callback="lamp.wishMade()" local-storage="genie">
           <input type="text" ng-model="lamp.input" class="lamp-input input form-control" />
           <div>
-            This is a custom template! Type "Default" to go back <i class="{{iconPrefix}}smile-o"></i><br />
+            yes yes yaa! This is a custom template! Type "Default" to go back <i class="{{iconPrefix}}smile-o"></i><br />
             You can customize the dom used for the lamp. Type "uxGenie" to see the docs.
             <div  ng-if="lamp.focusedWish">
               Wish <strong>"{{lamp.focusedWish.data.uxGenie.displayText || lamp.focusedWish.magicWords[0]}}"</strong> Data:<br />
@@ -180,9 +142,110 @@
           </div>
         </div>
       </div>
+
+      <style>
+
+        .lamp-results-outer-container {
+          display: flex;
+          max-height: 400px;
+          margin-top: 10px;
+        }
+
+        .lamp-search-icon {
+          position: absolute;
+          top: 21px;
+          left: 21px;
+        }
+
+        .lamp-wishes-group-label {
+          background-color: rgba(0, 0, 0, 0.2);
+          font-size: 12px;
+          padding: 3px 0 1px 12px;
+        }
+
+        .genie-lamp-container .lamp-results-outer-container .lamp-wishes-results-container {
+          flex-grow: 1;
+          flex-shrink: 1;
+          width: auto;
+          margin-top: 0;
+        }
+
+        .genie-lamp-container .lamp-results-outer-container .lamp-wish-preview-container {
+          padding-left: 15px;
+          flex-grow: 0;
+          flex-shrink: 0;
+          width: 500px;
+        }
+
+      </style>
       
       <div class="default-template {{genieStyle.color + ' ' + genieStyle.size + ' ' + genieStyle.animationSpeed}}" ng-show="genieStyle.template === 'default'">
-        <div ux-lamp lamp-visible="customLamp.genieVisible" rub-class="visible" wish-callback="customLamp.wishMade()" local-storage="genie">
+        <div ux-lamp="lamp" lamp-visible="customLamp.genieVisible" rub-class="visible" wish-callback="customLamp.wishMade()" local-storage="genie">
+          <i class="fa fa-search fa-2x lamp-search-icon"></i>
+          <input type="text" ng-model="lamp.input" class="lamp-input input form-control" />
+
+          <div class="lamp-results-outer-container" ng-show="lamp.matchingWishes.length > 0 || lamp.groupedAdditionalWishes.length > 0">
+            <div class="lamp-wishes-results-container">
+              <div ng-show="lamp.matchingWishes.length > 0" class="lamp-wishes-container">
+
+                <div ng-repeat="wish in lamp.matchingWishes">
+                  <div data-ng-if="$index == 0 || wish.data.uxGenie.group != lamp.matchingWishes[$index - 1].data.uxGenie.group"
+                       class="lamp-wishes-group-label">{{wish.data.uxGenie.group || "Sonstiges"}}</div>
+                  <div class="lamp-wish wish-{{wish.id}}"
+                       ng-class="{focused: lamp.focusedWish == wish}"
+                       ng-click="lamp.makeWish(wish)"
+                       ng-mouseenter="lamp.focusOnWish(wish, false)">
+                  <span class="wish-icon">
+                    <img class="wish-img-icon" ng-if="wish.data.uxGenie.imgIcon" ng-src="{{wish.data.uxGenie.imgIcon}}">
+                    <i class="wish-i-icon {{wish.data.uxGenie.iIcon}}" ng-if="wish.data.uxGenie.iIcon"></i>
+                  </span>
+                    <span class="wish-display">{{wish.data.uxGenie.displayText || wish.magicWords[0]}}</span>
+                  </div>
+                </div>
+
+
+                <!--<div class="lamp-wishes-group-label">Programm Funktionen</div>-->
+                <!--<div class="lamp-wish wish-{{wish.id}}" ng-repeat="wish in lamp.matchingWishes" ng-class="{focused: lamp.focusedWish == wish}" ng-click="lamp.makeWish(wish)" ng-mouseenter="lamp.focusOnWish(wish, false)">-->
+                  <!--<span class="wish-icon">-->
+                    <!--<img class="wish-img-icon" ng-if="wish.data.uxGenie.imgIcon" ng-src="{{wish.data.uxGenie.imgIcon}}">-->
+                    <!--<i class="wish-i-icon {{wish.data.uxGenie.iIcon}}" ng-if="wish.data.uxGenie.iIcon"></i>-->
+                  <!--</span>-->
+                  <!--<span class="wish-display">{{wish.data.uxGenie.displayText || wish.magicWords[0]}}</span>-->
+                <!--</div>-->
+              </div>
+
+              <!--<div ng-show="lamp.groupedAdditionalWishes.length > 0" class="lamp-wishes-container">-->
+                <!--<div ng-repeat="groupedAdditionalWishes in lamp.groupedAdditionalWishes">-->
+                  <!--<div class="lamp-wishes-group-label">{{ groupedAdditionalWishes.group }}</div>-->
+                  <!--<div class="lamp-wish wish-{{wish.id}}" ng-repeat="wish in groupedAdditionalWishes.wishes" ng-class="{focused: lamp.focusedWish == wish}" ng-click="lamp.makeWish(wish)" ng-mouseenter="lamp.focusOnWish(wish, false)">-->
+                    <!--<span class="wish-icon">-->
+                      <!--<img class="wish-img-icon" ng-if="wish.data.uxGenie.imgIcon" ng-src="{{wish.data.uxGenie.imgIcon}}">-->
+                      <!--<i class="wish-i-icon {{wish.data.uxGenie.iIcon}}" ng-if="wish.data.uxGenie.iIcon"></i>-->
+                    <!--</span>-->
+                    <!--<span class="wish-display">{{wish.data.uxGenie.displayText}}</span>-->
+                  <!--</div>-->
+                <!--</div>-->
+                <!---->
+                <!--&lt;!&ndash;<div ng-repeat-start="groupedAdditionalWish in lamp.groupedAdditionalWishes" class="lamp-wishes-group-label"></div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="lamp-wish wish-{{wish.id}}" ng-repeat="wish in lamp.matchingWishes" ng-class="{focused: lamp.focusedWish == wish}" ng-click="lamp.makeWish(wish)" ng-mouseenter="lamp.focusOnWish(wish, false)">&ndash;&gt;-->
+                  <!--&lt;!&ndash;<span class="wish-icon">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<img class="wish-img-icon" ng-if="wish.data.uxGenie.imgIcon" ng-src="{{wish.data.uxGenie.imgIcon}}">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<i class="wish-i-icon {{wish.data.uxGenie.iIcon}}" ng-if="wish.data.uxGenie.iIcon"></i>&ndash;&gt;-->
+                  <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<span class="wish-display">{{wish.data.uxGenie.displayText || wish.title}}</span>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div ng-repeat-end></div>&ndash;&gt;-->
+              <!--</div>-->
+
+            </div>
+
+            <div class="lamp-wish-preview-container" ng-show="lamp.matchingWishes.length > 0 || lamp.groupedAdditionalWishes.length > 0">
+              Title, Logo, whatever
+              <hr>
+              <!--<span style="white-space: pre-wrap;">{{ lamp.focusedWish.data | json }}</span>-->
+              <span style="white-space: pre-wrap;">description, whatever</span>
+            </div>
+          </div>
         </div>
       </div>
 

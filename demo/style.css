@@ -84,7 +84,7 @@ h3 {
   width: 100%;
   cursor: pointer;
   overflow-y: auto;
-  margin-top: 10px;
+  /*margin-top: 10px;*/
 }
 
 .lamp-wish {
@@ -95,8 +95,8 @@ h3 {
 }
 
 .lamp-wish.focused {
-  -mos-border-radius: 8px;
-  border-radius: 8px;
+  /*-mos-border-radius: 8px;*/
+  /*border-radius: 8px;*/
 }
 
 /* ng-genie light styles */
@@ -130,30 +130,35 @@ h3 {
 
 /* ng-genie large styles */
 .large .genie-lamp-container {
-  width: 600px;
-  margin-left: -300px;
+  width: 800px;
+  margin-left: -400px;
   padding: 16px;
 }
 
 .large .lamp-input {
-  line-height: 60px;
   padding: 0px 12px 0px 12px;
-  font-size: 40px;
-  height: 60px;
+  font-size: 24px;
+  height: 35px;
+  font-weight: 300;
+  padding-left: 48px;
+  border: none;
+  background-color: inherit;
+  box-shadow: none;
+  line-height: 35px;
 }
 
 .large .lamp-wishes-container {
   max-height: 300px;
-  font-size: 30px;
+  font-size: 18px;
 }
 
 .large .lamp-wish {
   padding: 0px 12px 0px 12px;
-  line-height: 50px;
+  line-height: 32px;
 }
 
 .large .wish-img-icon, .large .wish-i-icon {
-  height: 35px;
+  height: 20px;
   margin-right: 10px;
 }
 

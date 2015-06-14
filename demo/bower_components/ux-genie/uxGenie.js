@@ -193,6 +193,7 @@
           } else if (containerTop > focusedWishTop) {
             containerEl.scrollTop = focusedWishTop;
           }
+          //lampWishesContainer[0].querySelectorAll('.lamp-wish')[index].scrollIntoViewIfNeeded();
         }
 
         /*
